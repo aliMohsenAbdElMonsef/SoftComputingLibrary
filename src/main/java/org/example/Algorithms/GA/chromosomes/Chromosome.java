@@ -1,6 +1,6 @@
 package org.example.Algorithms.GA.chromosomes;
 
-public abstract class Chromosome implements Comparable<Chromosome> {
+public abstract class Chromosome<G> implements Comparable<Chromosome<G>> {
     protected double fitness;
 
     public double getFitness() {
@@ -11,21 +11,19 @@ public abstract class Chromosome implements Comparable<Chromosome> {
         this.fitness = fitness;
     }
 
-    public abstract Object getGenes();
+    public abstract G getGenes();
+    public abstract void setGenes(G genes);
     public abstract int getGenesNum();
+    public abstract void mutate(double mutationRate);
+    public abstract Chromosome<G> copy();
+    public abstract void swapGene(Chromosome<G> c, int index);
     @Override
-    public int compareTo(Chromosome o) {
+    public int compareTo(Chromosome<G> o) {
         return Double.compare(o.fitness, this.fitness);
     }
-    public abstract Chromosome[] crossover(Chromosome parent2, int point);
-    public abstract void mutate(double mutationRate);
-
-    public abstract Chromosome copy();
-    public abstract void setGenes(Object genes);
 
     @Override
     public String toString() {
         return STR."Fitness=\{fitness}, Genes=\{getGenes()}";
     }
 }
-
