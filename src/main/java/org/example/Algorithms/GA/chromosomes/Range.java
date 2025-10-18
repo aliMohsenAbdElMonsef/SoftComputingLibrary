@@ -1,22 +1,19 @@
 package org.example.Algorithms.GA.chromosomes;
 
 public class Range {
+    private final double start;
+    private final double end;
 
-    private static int start, end;
+    public Range(double start, double end) {
+        this.start = start;
+        this.end = end;
+    }
 
-    public static int getStart() {
+    public double getStart() {
         return start;
     }
 
-    public static void setStart(int start) {
-        Range.start = start;
-    }
-
-    public static int getEnd() {
+    public double getEnd() {
         return end;
-    }
-
-    public static void setEnd(int end) {
-        Range.end = end;
     }
 }

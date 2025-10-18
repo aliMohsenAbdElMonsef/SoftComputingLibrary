@@ -42,7 +42,6 @@ public class FloatingPointChromosome extends Chromosome {
         double[] c1Genes = (double[]) this.getGenes();
         double[] c2Genes = (double[]) parent2.getGenes();
 
-        for
         return new Chromosome[]{child1, child2};
     }
 
