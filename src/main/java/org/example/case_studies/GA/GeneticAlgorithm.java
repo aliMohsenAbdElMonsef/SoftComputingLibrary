@@ -1,9 +1,8 @@
 package org.example.case_studies.GA;
 
+import org.example.Algorithms.GA.chromosomes.*;
+import org.example.Algorithms.GA.crossovers.ICrossOver;
 import org.example.case_studies.GA.functions.Functions;
-import org.example.Algorithms.GA.chromosomes.BinaryChromosome;
-import org.example.Algorithms.GA.chromosomes.Chromosome;
-import org.example.Algorithms.GA.chromosomes.Range;
 import org.example.Algorithms.GA.selection.methods.ISelection;
 import org.example.Algorithms.GA.selection.methods.TournamentSelection;
 
@@ -19,8 +18,10 @@ public class GeneticAlgorithm {
     private Range[] ranges;
     private int numVariables;
     private ISelection selection;
+    private Class<? extends Chromosome> chromosomeType;
+    private ICrossOver crossover;
 
-    private List<BinaryChromosome> population;
+    private List<Chromosome> population;
 
     public GeneticAlgorithm() {
         this.selection = new TournamentSelection();
@@ -53,49 +54,64 @@ public class GeneticAlgorithm {
         this.ranges = ranges;
     }
 
+    public void setChromosomeType(Class<? extends Chromosome> chromosomeType) {
+        this.chromosomeType = chromosomeType;
+    }
+
     public void setSelection(ISelection selection) {
         this.selection = selection;
+    }
+
+    public void setCrossover(ICrossOver crossover) {
+        this.crossover = crossover;
     }
 
     public void run() {
         population = new ArrayList<>();
         for (int i = 0; i < populationSize; i++) {
-            population.add(new BinaryChromosome(numVariables, chromosomeLength, ranges));
+            if (chromosomeType == BinaryChromosome.class) {
+                population.add(new BinaryChromosome(numVariables, chromosomeLength, ranges));
+            }
+            else if(chromosomeType == FloatingPointChromosome.class) {
+                population.add(new FloatingPointChromosome(numVariables, ranges));
+            } else if (chromosomeType == IntegerChromosome.class  ) {
+                population.add(new IntegerChromosome(numVariables, ranges));
+            }
+
         }
 
-        BinaryChromosome best = null;
-        BinaryChromosome worst = null;
+        Chromosome best = null;
+        Chromosome worst = null;
 
         for (int gen = 0; gen < generations; gen++) {
-            for (BinaryChromosome c : population) {
-                double[] x = c.decode();
+            for (Chromosome c : population) {
+                double[] x  = decodeChromosome(c);
                 double f = fitnessFunction.method(x[0], x[1], x[2], x[3]);
                 c.setFitness(f);
             }
 
-            population.sort(Comparator.comparingDouble(BinaryChromosome::getFitness));
+            population.sort(Comparator.comparingDouble(Chromosome::getFitness));
             worst = population.get(0);
             best = population.get(population.size() - 1);
 
             System.out.printf("Generation %d | Best Fitness: %.5f | Worst Fitness: %.5f%n",
                     gen, best.getFitness(), worst.getFitness());
 
-            List<BinaryChromosome> newPop = new ArrayList<>();
+            List<Chromosome> newPop = new ArrayList<>();
             Random rand = new Random();
 
             while (newPop.size() < populationSize) {
-                BinaryChromosome parent1 = (BinaryChromosome) selection.select(population);
-                BinaryChromosome parent2 = (BinaryChromosome) selection.select(population);
+                Chromosome parent1 = selection.select(population);
+                Chromosome parent2 = selection.select(population);
 
-                BinaryChromosome child1, child2;
+                Chromosome child1, child2;
                 if (rand.nextDouble() < crossoverRate) {
-                    int point = rand.nextInt(parent1.getGenesNum());
-                    Chromosome[] offspring = parent1.crossover(parent2, point);
-                    child1 = (BinaryChromosome) offspring[0];
-                    child2 = (BinaryChromosome) offspring[1];
+                    Chromosome[] offspring = crossover.apply(parent1, parent2);
+                    child1 = offspring[0];
+                    child2 = offspring[1];
                 } else {
-                    child1 = (BinaryChromosome) parent1.copy();
-                    child2 = (BinaryChromosome) parent2.copy();
+                    child1 = parent1.copy();
+                    child2 = parent2.copy();
                 }
 
                 child1.mutate(mutationRate);
@@ -108,7 +124,32 @@ public class GeneticAlgorithm {
         }
 
         System.out.println("\n===== RESULTS =====");
+        System.out.println("Chromosome Type: " + chromosomeType.getSimpleName());
         System.out.println("Best Chromosome: " + best);
         System.out.println("Worst Chromosome: " + worst);
+    }
+
+    private double[] decodeChromosome(Chromosome chromosome) {
+        if (chromosome instanceof BinaryChromosome) {
+            return ((BinaryChromosome) chromosome).decode();
+        } else if (chromosome instanceof FloatingPointChromosome) {
+            Object genes = chromosome.getGenes();
+            if (genes instanceof double[]) {
+                return (double[]) genes;
+            }
+        } else if (chromosome instanceof IntegerChromosome) {
+            Object genes = chromosome.getGenes();
+            if (genes instanceof int[]) {
+                int[] intGenes = (int[]) genes;
+                double[] doubleGenes = new double[intGenes.length];
+                for (int i = 0; i < intGenes.length; i++) {
+                    doubleGenes[i] = intGenes[i];
+                }
+                return doubleGenes;
+            }
+        }
+
+        // return zeros if we can't decode
+        return new double[numVariables];
     }
 }
