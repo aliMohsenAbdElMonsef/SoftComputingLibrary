@@ -19,4 +19,6 @@ public class SingleCrossOver<G> implements ICrossOver<G> {
         }
         return new Chromosome[]{child1, child2};
     }
+
+
 }

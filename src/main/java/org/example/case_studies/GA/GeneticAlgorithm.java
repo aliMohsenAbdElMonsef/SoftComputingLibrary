@@ -1,65 +1,67 @@
 package org.example.case_studies.GA;
 
+import org.example.Algorithms.GA.Factories.Chromosomes.ChromosomeFactory;
+import org.example.Algorithms.GA.Factories.Fitnesses.FitnessFactory;
 import org.example.Algorithms.GA.chromosomes.*;
 import org.example.Algorithms.GA.crossovers.ICrossOver;
+import org.example.Algorithms.GA.replacements.IReplacementStrategy;
+import org.example.Algorithms.GA.selections.RouletteWheelSelection;
 import org.example.case_studies.GA.functions.Functions;
-import org.example.Algorithms.GA.selection.methods.ISelection;
-import org.example.Algorithms.GA.selection.methods.TournamentSelection;
+import org.example.Algorithms.GA.selections.ISelection;
 
 import java.util.*;
 
 public class GeneticAlgorithm {
-    private int populationSize;
-    private int generations;
-    private double crossoverRate;
-    private double mutationRate;
-    protected int chromosomeLength;
-    private Functions fitnessFunction;
-    private Range[] ranges;
-    private int numVariables;
-    private ISelection selection;
-    private Class<? extends Chromosome> chromosomeType;
+    private int populationSize;//done
+    private int generations;//done
+    private int selectionSize;
+    private double crossoverRate;//done
+    private double mutationRate;//done
+    private Functions fitnessFunction;//done
+    private Range[] ranges;//done
+    private int numVariables;//dene
+    private ISelection selection;//done
+    private ChromosomeFactory chromosomeFactory;//done
     private ICrossOver crossover;
-
+    private IReplacementStrategy replacementStrategy;
     private List<Chromosome> population;
-
+    private String ChromosomeType;
     public GeneticAlgorithm() {
-        this.selection = new TournamentSelection();
+        this.selection = new RouletteWheelSelection();
     }
 
     public void setPopulationSize(int populationSize) {
         this.populationSize = populationSize;
     }
 
+    public void setGenerations(int generations) {
 
+        this.generations = generations;
+    }
     public void setCrossoverRate(double crossoverRate) {
         this.crossoverRate = crossoverRate;
     }
-
     public void setMutationRate(double mutationRate) {
         this.mutationRate = mutationRate;
     }
+    public void setFitnessFunction(FitnessFactory fitnessFunction) {
 
-    public void setGenerations(int generations) {
-        this.generations = generations;
+        this.fitnessFunction = fitnessFunction.create();
     }
-
-    public void setFitnessFunction(Functions fitnessFunction) {
-        this.fitnessFunction = fitnessFunction;
-    }
-
-    public void setChromosomeConfig(int numVariables, int chromosomeLength, Range[] ranges) {
+    public void setChromosomeConfig(int numVariables, Range[] ranges) {
         this.numVariables = numVariables;
-        this.chromosomeLength = chromosomeLength;
         this.ranges = ranges;
     }
-
-    public void setChromosomeType(Class<? extends Chromosome> chromosomeType) {
-        this.chromosomeType = chromosomeType;
+    public void setChromosomeFactory(ChromosomeFactory factory) {
+        this.chromosomeFactory = factory;
     }
-
     public void setSelection(ISelection selection) {
+
         this.selection = selection;
+    }
+    public void setReplacementStrategy(IReplacementStrategy replacementStrategy, int selectionSize) {
+        this.replacementStrategy = replacementStrategy;
+        this.selectionSize = selectionSize;
     }
 
     public void setCrossover(ICrossOver crossover) {
@@ -69,15 +71,8 @@ public class GeneticAlgorithm {
     public void run() {
         population = new ArrayList<>();
         for (int i = 0; i < populationSize; i++) {
-            if (chromosomeType == BinaryChromosome.class) {
-                population.add(new BinaryChromosome(numVariables, chromosomeLength, ranges));
-            }
-            else if(chromosomeType == FloatingPointChromosome.class) {
-                population.add(new FloatingPointChromosome(numVariables, ranges));
-            } else if (chromosomeType == IntegerChromosome.class  ) {
-                population.add(new IntegerChromosome(numVariables, ranges));
-            }
-
+            Chromosome c = chromosomeFactory.create(numVariables, ranges);
+            population.add(c);
         }
 
         Chromosome best = null;
@@ -89,20 +84,20 @@ public class GeneticAlgorithm {
                 double f = fitnessFunction.method(x[0], x[1], x[2], x[3]);
                 c.setFitness(f);
             }
-
-            population.sort(Comparator.comparingDouble(Chromosome::getFitness));
-            worst = population.get(0);
-            best = population.get(population.size() - 1);
+            List<Chromosome> selectedPortion = replacementStrategy.selectForReproduction(population,selectionSize);
+            selectedPortion.sort(Comparator.comparingDouble(Chromosome::getFitness));
+            worst = selectedPortion.get(0);
+            best = selectedPortion.get(selectedPortion.size() - 1);
 
             System.out.printf("Generation %d | Best Fitness: %.5f | Worst Fitness: %.5f%n",
                     gen, best.getFitness(), worst.getFitness());
 
-            List<Chromosome> newPop = new ArrayList<>();
+            List<Chromosome> offSprings = new ArrayList<>();
             Random rand = new Random();
 
-            while (newPop.size() < populationSize) {
-                Chromosome parent1 = selection.select(population);
-                Chromosome parent2 = selection.select(population);
+            while (offSprings.size() < selectedPortion.size()) {
+                Chromosome parent1 = selection.select(selectedPortion);
+                Chromosome parent2 = selection.select(selectedPortion);
 
                 Chromosome child1, child2;
                 if (rand.nextDouble() < crossoverRate) {
@@ -116,40 +111,19 @@ public class GeneticAlgorithm {
 
                 child1.mutate(mutationRate);
                 child2.mutate(mutationRate);
-                newPop.add(child1);
-                if (newPop.size() < populationSize) newPop.add(child2);
+                offSprings.add(child1);
+                if (offSprings.size() < populationSize) offSprings.add(child2);
             }
 
-            population = newPop;
+            replacementStrategy.Replace(population,selectedPortion,offSprings);
         }
 
         System.out.println("\n===== RESULTS =====");
-        System.out.println("Chromosome Type: " + chromosomeType.getSimpleName());
+        System.out.println("Chromosome Type: " + this.chromosomeFactory.getChromosomeType());
         System.out.println("Best Chromosome: " + best);
         System.out.println("Worst Chromosome: " + worst);
     }
-
     private double[] decodeChromosome(Chromosome chromosome) {
-        if (chromosome instanceof BinaryChromosome) {
-            return ((BinaryChromosome) chromosome).decode();
-        } else if (chromosome instanceof FloatingPointChromosome) {
-            Object genes = chromosome.getGenes();
-            if (genes instanceof double[]) {
-                return (double[]) genes;
-            }
-        } else if (chromosome instanceof IntegerChromosome) {
-            Object genes = chromosome.getGenes();
-            if (genes instanceof int[]) {
-                int[] intGenes = (int[]) genes;
-                double[] doubleGenes = new double[intGenes.length];
-                for (int i = 0; i < intGenes.length; i++) {
-                    doubleGenes[i] = intGenes[i];
-                }
-                return doubleGenes;
-            }
-        }
-
-        // return zeros if we can't decode
-        return new double[numVariables];
+        return chromosome.decode();
     }
 }

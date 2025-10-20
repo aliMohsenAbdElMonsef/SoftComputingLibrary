@@ -1,19 +1,21 @@
 package org.example.Algorithms.GA.chromosomes;
 
+import org.example.Algorithms.GA.Factories.Chromosomes.ChromosomeFactory;
+
 import java.util.Random;
 import java.util.Arrays;
 
-public class BinaryChromosome extends Chromosome<String> {
+public class BinaryChromosome extends Chromosome<String>  implements ChromosomeFactory<String> {
     private static final Random rand = new Random();
 
     private StringBuilder genes;
-    private final int numberOfBitsPerVariable;
+    private final int numberOfBitsPerVariable = 10;
     private final int numberOfVariables;
     private final Range[] ranges;
 
-    public BinaryChromosome(int numberOfVariables, int numberOfBitsPerVariable, Range[] ranges) {
-        this.numberOfVariables = numberOfVariables;
-        this.numberOfBitsPerVariable = numberOfBitsPerVariable;
+    public BinaryChromosome(int ChromosomeLength, Range[] ranges) {
+        super(ChromosomeLength, ranges);
+        this.numberOfVariables = ChromosomeLength;
         this.ranges = Arrays.copyOf(ranges, ranges.length);
 
         int totalBits = numberOfVariables * numberOfBitsPerVariable;
@@ -47,7 +49,7 @@ public class BinaryChromosome extends Chromosome<String> {
         }
         return binary;
     }
-
+    @Override
     public double[] decode() {
         double[] decoded = new double[numberOfVariables];
         for (int i = 0; i < numberOfVariables; i++) {
@@ -75,7 +77,7 @@ public class BinaryChromosome extends Chromosome<String> {
 
     @Override
     public Chromosome<String> copy() {
-        BinaryChromosome copy = new BinaryChromosome(numberOfVariables, numberOfBitsPerVariable, ranges);
+        BinaryChromosome copy = new BinaryChromosome(numberOfVariables, ranges);
         copy.setGenes(this.genes.toString());
         copy.fitness = this.fitness;
         return copy;
@@ -102,5 +104,15 @@ public class BinaryChromosome extends Chromosome<String> {
                 .append(", Genes=").append(genes)
                 .append(", Decoded=").append(Arrays.toString(decoded));
         return sb.toString();
+    }
+
+    @Override
+    public Chromosome<String> create(int ChromosomeLength, Range[] ranges) {
+        return new BinaryChromosome(ChromosomeLength, ranges);
+    }
+
+    @Override
+    public String getChromosomeType() {
+        return "Binary";
     }
 }

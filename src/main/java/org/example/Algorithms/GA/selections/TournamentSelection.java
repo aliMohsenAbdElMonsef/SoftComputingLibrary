@@ -1,4 +1,4 @@
-package org.example.Algorithms.GA.selection.methods;
+package org.example.Algorithms.GA.selections;
 
 import org.example.Algorithms.GA.chromosomes.Chromosome;
 
@@ -12,10 +12,6 @@ public class TournamentSelection implements ISelection {
     public TournamentSelection(int tournamentSize) {
         this.tournamentSize = tournamentSize;
         this.rand = new Random();
-    }
-
-    public TournamentSelection() {
-        this(3);
     }
 
     @Override

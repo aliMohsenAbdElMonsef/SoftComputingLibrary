@@ -16,6 +16,7 @@ public class MultiCrossOver<G> implements ICrossOver<G>{
     @Override
     public Chromosome<G>[] apply(Chromosome<G> parent1, Chromosome<G> parent2) {
         int length = parent1.getGenesNum();
+        rand = new Random();
         if (numPoints >= length) throw new IllegalArgumentException("numPoints must be less than gene length");
 
         int[] points = rand.ints(1, length).distinct().limit(numPoints).sorted().toArray();
@@ -39,4 +40,6 @@ public class MultiCrossOver<G> implements ICrossOver<G>{
         }
         return new Chromosome[]{child1, child2};
     }
+
+
 }

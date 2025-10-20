@@ -1,4 +1,4 @@
-package org.example.Algorithms.GA.selection.methods;
+package org.example.Algorithms.GA.selections;
 
 import org.example.Algorithms.GA.chromosomes.Chromosome;
 import java.util.List;

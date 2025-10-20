@@ -4,7 +4,7 @@ import org.example.Algorithms.GA.chromosomes.Chromosome;
 
 import java.util.Random;
 
-public class UniformCrossOver implements ICrossOver {
+public class UniformCrossOver implements ICrossOver{
     @Override
     public Chromosome[] apply(Chromosome parent1, Chromosome parent2) {
         Random rand = new Random();
@@ -31,5 +31,6 @@ public class UniformCrossOver implements ICrossOver {
 
         return new Chromosome[]{child1, child2};
     }
+
 
 }

@@ -1,23 +1,37 @@
 package org.example.Algorithms.GA.chromosomes;
 
+import org.example.Algorithms.GA.Factories.Chromosomes.ChromosomeFactory;
+
 import java.util.Arrays;
 import java.util.Random;
 
-public class IntegerChromosome extends Chromosome<int[]> {
+public class IntegerChromosome extends Chromosome<int[]> implements ChromosomeFactory<int[]> {
     private static final Random rand = new Random();
 
     private int[] genes;
     private final Range[] ranges;
 
     public IntegerChromosome(int geneCount, Range[] ranges) {
+        super(geneCount,ranges);
         this.ranges = Arrays.copyOf(ranges, ranges.length);
         this.genes = new int[geneCount];
 
         for (int i = 0; i < geneCount; i++) {
-            int min = this.ranges[i].getStart();
-            int max = this.ranges[i].getEnd();
-            genes[i] = rand.nextInt(max - min + 1) + min;
+            double min = this.ranges[i].getStart();
+            double max = this.ranges[i].getEnd();
+            genes[i] = (int) (rand.nextInt((int)(max - min + 1)) + min);
         }
+    }
+
+    @Override
+    public double[] decode() {
+        int[] genes = this.getGenes();
+        int[] intGenes = (int[]) genes;
+        double[] doubleGenes = new double[intGenes.length];
+        for (int i = 0; i < intGenes.length; i++) {
+            doubleGenes[i] =  intGenes[i];
+        }
+        return doubleGenes;
     }
 
     @Override
@@ -36,40 +50,12 @@ public class IntegerChromosome extends Chromosome<int[]> {
     }
 
     @Override
-    public Chromosome[] crossover(Chromosome parent2, int point) {
-        if (!(parent2 instanceof IntegerChromosome p2))
-            throw new IllegalArgumentException("Parent must be IntegerChromosome");
-
-        int[] g1 = (int[]) this.getGenes();
-        int[] g2 = (int[]) p2.getGenes();
-
-        int[] newG1 = new int[g1.length];
-        int[] newG2 = new int[g2.length];
-
-        // Copy genes before crossover point from parent1
-        System.arraycopy(g1, 0, newG1, 0, point);
-        System.arraycopy(g2, 0, newG2, 0, point);
-
-        // Copy genes after crossover point from parent2
-        System.arraycopy(g2, point, newG1, point, g1.length - point);
-        System.arraycopy(g1, point, newG2, point, g2.length - point);
-
-        IntegerChromosome child1 = (IntegerChromosome) this.copy();
-        IntegerChromosome child2 = (IntegerChromosome) p2.copy();
-
-        child1.setGenes(newG1);
-        child2.setGenes(newG2);
-
-        return new Chromosome[]{child1, child2};
-    }
-
-    @Override
     public void mutate(double mutationRate) {
         for (int i = 0; i < genes.length; i++) {
             if (rand.nextDouble() < mutationRate) {
-                int min = ranges[i].getStart();
-                int max = ranges[i].getEnd();
-                genes[i] = rand.nextInt(max - min + 1) + min;
+                double min = this.ranges[i].getStart();
+                double max = this.ranges[i].getEnd();
+                genes[i] = (int) (rand.nextInt((int)(max - min + 1)) + min);
             }
         }
     }
@@ -94,5 +80,15 @@ public class IntegerChromosome extends Chromosome<int[]> {
     @Override
     public String toString() {
         return "Fitness=" + fitness + ", Genes=" + Arrays.toString(genes);
+    }
+
+    @Override
+    public Chromosome<int[]> create(int ChromosomeLength, Range[] ranges) {
+        return new IntegerChromosome(ChromosomeLength,ranges);
+    }
+
+    @Override
+    public String getChromosomeType() {
+        return "Integer";
     }
 }

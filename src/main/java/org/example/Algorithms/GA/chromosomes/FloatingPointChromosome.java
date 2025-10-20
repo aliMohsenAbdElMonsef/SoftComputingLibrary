@@ -1,15 +1,18 @@
 package org.example.Algorithms.GA.chromosomes;
 
+import org.example.Algorithms.GA.Factories.Chromosomes.ChromosomeFactory;
+
 import java.util.Random;
 import java.util.Arrays;
 
-public class FloatingPointChromosome extends Chromosome<double[]> {
+public class FloatingPointChromosome extends Chromosome<double[]> implements ChromosomeFactory<double[]> {
     private static final Random rand = new Random();
 
     private double[] genes;
     private final Range[] ranges;
 
     public FloatingPointChromosome(int numberOfVariables, Range[] ranges) {
+        super(numberOfVariables,ranges);
         this.ranges = Arrays.copyOf(ranges, ranges.length);
         this.genes = new double[numberOfVariables];
 
@@ -65,9 +68,23 @@ public class FloatingPointChromosome extends Chromosome<double[]> {
         g1[index] = g2[index];
         g2[index] = temp;
     }
-
+    @Override
+    public double[] decode() {
+        double[] genes = this.getGenes();
+        return genes;
+    }
     @Override
     public String toString() {
         return "FloatingPointChromosome Fitness=" + fitness + ", Genes=" + Arrays.toString(genes);
+    }
+
+    @Override
+    public Chromosome<double[]> create(int ChromosomeLength, Range[] ranges) {
+        return new FloatingPointChromosome(ChromosomeLength, ranges);
+    }
+
+    @Override
+    public String getChromosomeType() {
+        return "Floating Point";
     }
 }

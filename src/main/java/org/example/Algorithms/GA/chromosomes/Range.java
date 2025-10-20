@@ -1,8 +1,8 @@
 package org.example.Algorithms.GA.chromosomes;
 
 public class Range {
-    private final double start;
-    private final double end;
+    private double start = 0.0;
+    private double end = 5.0;
 
     public Range(double start, double end) {
         this.start = start;
@@ -15,5 +15,9 @@ public class Range {
 
     public double getEnd() {
         return end;
+    }
+    public static boolean checkRange(double st, double end)
+    {
+        return (st <= end);
     }
 }
