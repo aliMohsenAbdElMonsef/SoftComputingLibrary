@@ -44,13 +44,18 @@ public class GeneticAlgorithm {
     public void setMutationRate(double mutationRate) {
         this.mutationRate = mutationRate;
     }
-    public void setFitnessFunction(FitnessFactory fitnessFunction) {
+    public void setFitnessFunction(Functions fitnessFunction) {
 
-        this.fitnessFunction = fitnessFunction.create();
+        this.fitnessFunction = fitnessFunction;
     }
     public void setChromosomeConfig(int numVariables, Range[] ranges) {
         this.numVariables = numVariables;
-        this.ranges = ranges;
+        // validate and possibly adjust ranges according to the fitness function
+        if (this.fitnessFunction != null) {
+            this.ranges = this.fitnessFunction.validateInput(ranges);
+        } else {
+            this.ranges = ranges;
+        }
     }
     public void setChromosomeFactory(ChromosomeFactory factory) {
         this.chromosomeFactory = factory;
