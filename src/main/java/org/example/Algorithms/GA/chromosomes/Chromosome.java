@@ -24,6 +24,6 @@ public abstract class Chromosome<G> implements Comparable<Chromosome<G>> {
 
     @Override
     public String toString() {
-        return STR."Fitness=\{fitness}, Genes=\{getGenes()}";
+        return "Fitness=" + fitness + ", Genes=" + getGenes();
     }
 }
