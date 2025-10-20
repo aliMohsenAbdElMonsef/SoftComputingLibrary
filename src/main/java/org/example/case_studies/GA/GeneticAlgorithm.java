@@ -84,7 +84,7 @@ public class GeneticAlgorithm {
         for (int gen = 0; gen < generations; gen++) {
             for (Chromosome c : population) {
                 double[] x  = decodeChromosome(c);
-                double f = fitnessFunction.method(x[0], x[1], x[2], x[3]);
+                double f = fitnessFunction.validateInput(x[0], x[1], x[2], x[3]);
                 c.setFitness(f);
             }
             List<Chromosome> selectedPortion = replacementStrategy.selectForReproduction(population,selectionSize);
