@@ -44,9 +44,9 @@ public class GeneticAlgorithm {
     public void setMutationRate(double mutationRate) {
         this.mutationRate = mutationRate;
     }
-    public void setFitnessFunction(FitnessFactory fitnessFunction) {
+    public void setFitnessFunction(Functions fitnessFunction) {
 
-        this.fitnessFunction = fitnessFunction.create();
+        this.fitnessFunction = fitnessFunction;
     }
     public void setChromosomeConfig(int numVariables, Range[] ranges) {
         this.numVariables = numVariables;

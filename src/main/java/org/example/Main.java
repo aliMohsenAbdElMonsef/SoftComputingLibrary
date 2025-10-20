@@ -17,6 +17,8 @@ import org.example.Algorithms.GA.replacements.SteadyStateReplacement;
 import org.example.Algorithms.GA.selections.ISelection;
 import org.example.case_studies.GA.GeneticAlgorithm;
 import org.example.Algorithms.GA.crossovers.*;
+import org.example.case_studies.GA.functions.Functions;
+
 import java.util.Map;
 import java.util.Scanner;
 
@@ -52,7 +54,7 @@ public class Main {
         );
 
         FitnessFactory fitnessFactory = fitnessFactoryMap.getOrDefault(functionChoice, new Fitness2Factory());
-
+        Functions function = fitnessFactory.create();
 
         // 2. Choose Selection Method
         System.out.println("\n--- Selection Methods ---");
@@ -162,7 +164,7 @@ public class Main {
         // Create and configure Genetic Algorithm
         GeneticAlgorithm ga = new GeneticAlgorithm();
         ga.setPopulationSize(populationsize);
-        ga.setFitnessFunction(fitnessFactory);
+        ga.setFitnessFunction(function);
         ga.setCrossoverRate(crossoverrate);
         ga.setMutationRate(mutationRate);
         ga.setGenerations(generations);
