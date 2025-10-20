@@ -1,57 +1,43 @@
 package org.example.Algorithms.GA.chromosomes;
 
 import java.util.Random;
+import java.util.Arrays;
 
-public class BinaryChromosome extends Chromosome {
+public class BinaryChromosome extends Chromosome<String> {
+    private static final Random rand = new Random();
+
     private StringBuilder genes;
-    private int numberOfBitsPerVariable;
-    private int numberOfVariables;
-    private Range[] ranges;
-    public BinaryChromosome(int numVariables, int numberOfBitsPerVariable, Range[] ranges) {
+    private final int numberOfBitsPerVariable;
+    private final int numberOfVariables;
+    private final Range[] ranges;
+
+    public BinaryChromosome(int numberOfVariables, int numberOfBitsPerVariable, Range[] ranges) {
+        this.numberOfVariables = numberOfVariables;
         this.numberOfBitsPerVariable = numberOfBitsPerVariable;
-        this.numberOfVariables = numVariables;
-        this.ranges = ranges;
-        int totalBits = numVariables * numberOfBitsPerVariable;
-        genes = new StringBuilder();
-        Random rand = new Random();
+        this.ranges = Arrays.copyOf(ranges, ranges.length);
+
+        int totalBits = numberOfVariables * numberOfBitsPerVariable;
+        genes = new StringBuilder(totalBits);
+
         for (int i = 0; i < totalBits; i++) {
             genes.append(rand.nextInt(2));
         }
     }
+
     @Override
-    public Object getGenes() {
+    public String getGenes() {
         return genes.toString();
     }
+
     @Override
-    public void setGenes(Object genes) {
-        String _gene = (String) genes;
-        this.genes = new StringBuilder(_gene);
+    public void setGenes(String _genes) {
+        this.genes = new StringBuilder(_genes);
     }
+
     @Override
     public int getGenesNum() {
         return genes.length();
     }
-
-    @Override
-    public Chromosome[] crossover(Chromosome parent2, int point) {
-        if (!(parent2 instanceof BinaryChromosome p2))
-            throw new IllegalArgumentException("Parent must be BinaryChromosome");
-
-        String g1 = (String) this.getGenes();
-        String g2 = (String) p2.getGenes();
-
-        String newG1 = g1.substring(0, point) + g2.substring(point);
-        String newG2 = g2.substring(0, point) + g1.substring(point);
-
-        BinaryChromosome child1 = (BinaryChromosome) this.copy();
-        BinaryChromosome child2 = (BinaryChromosome) p2.copy();
-
-        child1.setGenes(newG1);
-        child2.setGenes(newG2);
-
-        return new Chromosome[]{child1, child2};
-    }
-
 
     private int grayToBinary(int gray) {
         int binary = gray;
@@ -61,6 +47,7 @@ public class BinaryChromosome extends Chromosome {
         }
         return binary;
     }
+
     public double[] decode() {
         double[] decoded = new double[numberOfVariables];
         for (int i = 0; i < numberOfVariables; i++) {
@@ -69,29 +56,42 @@ public class BinaryChromosome extends Chromosome {
             String grayBits = genes.substring(start, end);
             int grayValue = Integer.parseInt(grayBits, 2);
             int binaryValue = grayToBinary(grayValue);
+
             double min = ranges[i].getStart();
             double max = ranges[i].getEnd();
             decoded[i] = min + ((double) binaryValue / (Math.pow(2, numberOfBitsPerVariable) - 1)) * (max - min);
         }
-
         return decoded;
     }
+
     @Override
     public void mutate(double mutationRate) {
-        Random rand = new Random();
         for (int i = 0; i < genes.length(); i++) {
             if (rand.nextDouble() < mutationRate) {
-                char bit = genes.charAt(i);
-                genes.setCharAt(i, bit == '0' ? '1' : '0');
+                genes.setCharAt(i, genes.charAt(i) == '0' ? '1' : '0');
             }
         }
     }
+
     @Override
-    public Chromosome copy() {
+    public Chromosome<String> copy() {
         BinaryChromosome copy = new BinaryChromosome(numberOfVariables, numberOfBitsPerVariable, ranges);
-        copy.genes = new StringBuilder(this.genes);
+        copy.setGenes(this.genes.toString());
         copy.fitness = this.fitness;
         return copy;
+    }
+
+    @Override
+    public void swapGene(Chromosome<String> c, int index) {
+        StringBuilder g1 = new StringBuilder(this.getGenes());
+        StringBuilder g2 = new StringBuilder(c.getGenes());
+        char temp = g1.charAt(index);
+
+        g1.setCharAt(index, g2.charAt(index));
+        g2.setCharAt(index, temp);
+
+        this.setGenes(g1.toString());
+        c.setGenes(g2.toString());
     }
 
     @Override
@@ -100,13 +100,7 @@ public class BinaryChromosome extends Chromosome {
         StringBuilder sb = new StringBuilder();
         sb.append("Fitness=").append(fitness)
                 .append(", Genes=").append(genes)
-                .append(", Decoded=[");
-
-        for (int i = 0; i < decoded.length; i++) {
-            sb.append(String.format("%.3f", decoded[i]));
-            if (i < decoded.length - 1) sb.append(", ");
-        }
-        sb.append("]");
+                .append(", Decoded=").append(Arrays.toString(decoded));
         return sb.toString();
     }
 }

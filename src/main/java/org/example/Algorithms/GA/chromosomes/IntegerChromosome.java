@@ -3,30 +3,31 @@ package org.example.Algorithms.GA.chromosomes;
 import java.util.Arrays;
 import java.util.Random;
 
-public class IntegerChromosome extends Chromosome {
+public class IntegerChromosome extends Chromosome<int[]> {
+    private static final Random rand = new Random();
+
     private int[] genes;
-    private Range[] ranges;
+    private final Range[] ranges;
 
     public IntegerChromosome(int geneCount, Range[] ranges) {
-        this.ranges = ranges;
+        this.ranges = Arrays.copyOf(ranges, ranges.length);
         this.genes = new int[geneCount];
-        Random rand = new Random();
+
         for (int i = 0; i < geneCount; i++) {
-            int maxValue = (int) ranges[i].getEnd();
-            int minValue = (int) ranges[i].getStart();
-            genes[i] = rand.nextInt(maxValue - minValue + 1) + minValue;
+            int min = this.ranges[i].getStart();
+            int max = this.ranges[i].getEnd();
+            genes[i] = rand.nextInt(max - min + 1) + min;
         }
     }
 
     @Override
-    public Object getGenes() {
+    public int[] getGenes() {
         return genes;
     }
 
     @Override
-    public void setGenes(Object genes) {
-        int[] _genes = (int[]) genes;
-        this.genes = _genes.clone();
+    public void setGenes(int[] genes) {
+        this.genes = genes;
     }
 
     @Override
@@ -64,22 +65,30 @@ public class IntegerChromosome extends Chromosome {
 
     @Override
     public void mutate(double mutationRate) {
-        Random rand = new Random();
         for (int i = 0; i < genes.length; i++) {
             if (rand.nextDouble() < mutationRate) {
-                int maxValue = (int) ranges[i].getEnd();
-                int minValue = (int) ranges[i].getStart();
-                genes[i] = rand.nextInt(maxValue - minValue + 1) + minValue;
+                int min = ranges[i].getStart();
+                int max = ranges[i].getEnd();
+                genes[i] = rand.nextInt(max - min + 1) + min;
             }
         }
     }
 
     @Override
-    public Chromosome copy() {
+    public Chromosome<int[]> copy() {
         IntegerChromosome copy = new IntegerChromosome(genes.length, ranges);
-        copy.genes = this.genes.clone();
+        copy.setGenes(genes.clone());
         copy.fitness = this.fitness;
         return copy;
+    }
+
+    @Override
+    public void swapGene(Chromosome<int[]> c, int index) {
+        int[] g1 = this.getGenes();
+        int[] g2 = c.getGenes();
+        int temp = g1[index];
+        g1[index] = g2[index];
+        g2[index] = temp;
     }
 
     @Override
