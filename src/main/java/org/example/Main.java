@@ -83,7 +83,7 @@ public class Main {
         {
             selection = selectionFactory.create();
         }
-        // Configure Ranges
+        // Configure and Validate Ranges
         Range[] ranges = new Range[4];
         for (int i = 0; i < 4; i++) {
             double st,end;
@@ -98,6 +98,9 @@ public class Main {
             }
             ranges[i] = new Range(st, end);
         }
+
+        ranges = function.validateInput(ranges);
+
         // 3. Choose Chromosome Type
         System.out.println("\n--- Chromosome Types ---");
         System.out.println("1. Binary Chromosome");

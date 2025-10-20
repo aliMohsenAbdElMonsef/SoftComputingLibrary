@@ -50,7 +50,12 @@ public class GeneticAlgorithm {
     }
     public void setChromosomeConfig(int numVariables, Range[] ranges) {
         this.numVariables = numVariables;
-        this.ranges = ranges;
+        // validate and possibly adjust ranges according to the fitness function
+        if (this.fitnessFunction != null) {
+            this.ranges = this.fitnessFunction.validateInput(ranges);
+        } else {
+            this.ranges = ranges;
+        }
     }
     public void setChromosomeFactory(ChromosomeFactory factory) {
         this.chromosomeFactory = factory;
@@ -84,7 +89,7 @@ public class GeneticAlgorithm {
         for (int gen = 0; gen < generations; gen++) {
             for (Chromosome c : population) {
                 double[] x  = decodeChromosome(c);
-                double f = fitnessFunction.validateInput(x[0], x[1], x[2], x[3]);
+                double f = fitnessFunction.method(x[0], x[1], x[2], x[3]);
                 c.setFitness(f);
             }
             List<Chromosome> selectedPortion = replacementStrategy.selectForReproduction(population,selectionSize);

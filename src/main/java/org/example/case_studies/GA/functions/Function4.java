@@ -1,5 +1,7 @@
 package org.example.case_studies.GA.functions;
 
+import org.example.Algorithms.GA.chromosomes.Range;
+
 public class Function4 implements Functions{
 
     @Override
@@ -7,27 +9,33 @@ public class Function4 implements Functions{
             return Math.sin(Math.toRadians(x1))*Math.cos(Math.toRadians(x2))+Math.sqrt(x3)*Math.pow(x4, 2);
     }
     @Override
-    public double validateInput(double x1, double x2, double x3, double x4) {
-            // Disallow NaN or Infinite inputs
-            if (Double.isNaN(x1) || Double.isNaN(x2) || Double.isNaN(x3) || Double.isNaN(x4) ||
-                Double.isInfinite(x1) || Double.isInfinite(x2) || Double.isInfinite(x3) || Double.isInfinite(x4)) {
-                throw new IllegalArgumentException("Invalid input: values must be finite real numbers.");
+    public Range[] validateInput(Range[] ranges) {
+            if (ranges == null || ranges.length != 4) {
+                throw new IllegalArgumentException("ranges must be length 4");
             }
-            // Domain for sqrt(x3)
-            if (x3 < 0) {
-                throw new IllegalArgumentException("Invalid input: x3 must be >= 0 for sqrt(x3).");
-            }
-            // Prevent overflow in pow(x4, 2)
             double SQRT_MAX = Math.sqrt(Double.MAX_VALUE);
-            if (Math.abs(x4) > SQRT_MAX) {
-                throw new IllegalArgumentException("Invalid input: |x4| too large; may overflow x4^2.");
+            Range[] out = new Range[4];
+            out[0] = new Range(ranges[0].getStart(), ranges[0].getEnd());
+            out[1] = new Range(ranges[1].getStart(), ranges[1].getEnd());
+            double x4s = Math.max(-SQRT_MAX, ranges[3].getStart());
+            double x4e = Math.min(SQRT_MAX, ranges[3].getEnd());
+            if (x4s > x4e) { throw new IllegalArgumentException("No valid subrange for x4 within overflow-safe bounds."); }
+            out[3] = new Range(x4s, x4e);
+            double x3s = Math.max(0.0, ranges[2].getStart());
+            double x3e = ranges[2].getEnd();
+            if (x3s > x3e) { throw new IllegalArgumentException("No valid subrange for x3 within domain constraints (x3 >= 0)."); }
+            double maxAbsX4 = Math.max(Math.abs(x4s), Math.abs(x4e));
+            if (maxAbsX4 > 0) {
+                double limit = Double.MAX_VALUE / (maxAbsX4 * maxAbsX4);
+                double maxX3Allowed = limit * limit;
+                if (Double.isFinite(maxX3Allowed)) {
+                    x3e = Math.min(x3e, maxX3Allowed);
+                    if (x3s > x3e) {
+                        throw new IllegalArgumentException("No valid subrange for x3 within overflow-safe bounds.");
+                    }
+                }
             }
-            // Prevent overflow in sqrt(x3) * (x4^2)
-            double x4sq = x4 * x4; // safe due to previous check
-            double limit = Double.MAX_VALUE / x4sq; // maximum allowed sqrt(x3)
-            if (Math.sqrt(x3) > limit) {
-                throw new IllegalArgumentException("Invalid input: sqrt(x3)*x4^2 too large; may overflow.");
-            }
-            return method(x1, x2, x3, x4);
+            out[2] = new Range(x3s, x3e);
+            return out;
     }
 }
