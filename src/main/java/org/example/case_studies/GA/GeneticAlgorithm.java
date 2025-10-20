@@ -78,6 +78,9 @@ public class GeneticAlgorithm {
         Chromosome best = null;
         Chromosome worst = null;
 
+        Chromosome generalbest = null;
+        Chromosome generalworst = null;
+
         for (int gen = 0; gen < generations; gen++) {
             for (Chromosome c : population) {
                 double[] x  = decodeChromosome(c);
@@ -88,7 +91,24 @@ public class GeneticAlgorithm {
             selectedPortion.sort(Comparator.comparingDouble(Chromosome::getFitness));
             worst = selectedPortion.get(0);
             best = selectedPortion.get(selectedPortion.size() - 1);
-
+            if(generalbest == null){
+                generalbest = best;
+            }
+            else{
+                if(best.getFitness() > generalbest.getFitness())
+                {
+                    generalbest = best;
+                }
+            }
+            if(generalworst == null){
+                generalworst = worst;
+            }
+            else{
+                if(worst.getFitness() < generalworst.getFitness())
+                {
+                    generalworst = worst;
+                }
+            }
             System.out.printf("Generation %d | Best Fitness: %.5f | Worst Fitness: %.5f%n",
                     gen, best.getFitness(), worst.getFitness());
 
@@ -112,7 +132,7 @@ public class GeneticAlgorithm {
                 child1.mutate(mutationRate);
                 child2.mutate(mutationRate);
                 offSprings.add(child1);
-                if (offSprings.size() < populationSize) offSprings.add(child2);
+                if (offSprings.size() < selectedPortion.size()) offSprings.add(child2);
             }
 
             replacementStrategy.Replace(population,selectedPortion,offSprings);
@@ -120,8 +140,8 @@ public class GeneticAlgorithm {
 
         System.out.println("\n===== RESULTS =====");
         System.out.println("Chromosome Type: " + this.chromosomeFactory.getChromosomeType());
-        System.out.println("Best Chromosome: " + best);
-        System.out.println("Worst Chromosome: " + worst);
+        System.out.println("Best Chromosome: " + generalbest);
+        System.out.println("Worst Chromosome: " + generalworst);
     }
     private double[] decodeChromosome(Chromosome chromosome) {
         return chromosome.decode();

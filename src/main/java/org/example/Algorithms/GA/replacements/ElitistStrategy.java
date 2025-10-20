@@ -11,7 +11,7 @@ public class ElitistStrategy implements IReplacementStrategy {
     public List<Chromosome> selectForReproduction(List<Chromosome> population, int k) {
         population.sort(Comparator.comparingDouble(Chromosome::getFitness));
         List<Chromosome> selected = new ArrayList<>();
-        for (int i = 0; i < k; i++) { // pick k best
+        for (int i = 0; i < k; i++) {
             selected.add(population.get(i));
         }
         return selected;

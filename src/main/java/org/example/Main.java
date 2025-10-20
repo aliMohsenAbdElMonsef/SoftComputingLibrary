@@ -22,8 +22,8 @@ import java.util.Scanner;
 
 public class Main {
      static void main(String[] args) {
-        int populationsize = 50;
-        double crossoverrate = .07;
+        int populationsize = 300;
+        double crossoverrate = .7;
         double mutationRate = .02;
         int generations = 10000;
         int numVariables = 4;
