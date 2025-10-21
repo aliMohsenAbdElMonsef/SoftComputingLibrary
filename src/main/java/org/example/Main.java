@@ -1,11 +1,8 @@
 package org.example;
 
-import org.example.Algorithms.GA.Factories.Fitnesses.*;
-import org.example.Algorithms.GA.chromosomes.*;
-import org.example.GAConfig.GAConfig;
-import org.example.GArunner.GARunner;
-import org.example.GAui.GAUI;
-import org.example.Algorithms.GA.crossovers.*;
+import org.example.Algorithms.GA.ApplicationLayer.GAConfig.GAConfig;
+import org.example.Algorithms.GA.Presentation.GArunner.GARunner;
+import org.example.Algorithms.GA.Presentation.GAui.GAUI;
 
 
 public class Main {
