@@ -7,9 +7,13 @@ import org.example.Algorithms.GA.Presentation.GAui.GAUI;
 
 public class Main {
      static void main(String[] args) {
+
          GAUI ui = new GAUI();
          GAConfig config = ui.collectUserInput();
          GARunner runner = new GARunner();
          runner.run(config);
+
+         FuzzyLogicCLI cli = new FuzzyLogicCLI();
+         cli.run();
     }
 }
