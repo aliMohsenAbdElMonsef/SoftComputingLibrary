@@ -1,8 +1,8 @@
-package org.example.FuzzyLogic.RulesManagement;
+package org.example.Algorithms.FuzzyLogic.RulesManagement;
 
-import org.example.FuzzyLogic.LinguisticVariable.Linguistic_Variable;
-import org.example.FuzzyLogic.Operations.Operation;
-import org.example.FuzzyLogic.Operations.OperationsFactory;
+import org.example.Algorithms.FuzzyLogic.LinguisticVariable.Linguistic_Variable;
+import org.example.Algorithms.FuzzyLogic.Operations.Operation;
+import org.example.Algorithms.FuzzyLogic.Operations.OperationsFactory;
 
 import java.util.*;
 import java.util.function.Function;

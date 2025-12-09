@@ -1,18 +1,18 @@
 package org.example.Algorithms.FuzzyLogic;
 
-import org.example.FuzzyLogic.Defuzzification.DefuzzifyType;
-import org.example.FuzzyLogic.InferenceEngines.InferenceEngine;
-import org.example.FuzzyLogic.InferenceEngines.MamdaniEngine;
-import org.example.FuzzyLogic.InferenceEngines.SugenoEngine;
-import org.example.FuzzyLogic.LinguisticVariable.Linguistic_Variable;
-import org.example.FuzzyLogic.MembershipFunctions.Function;
-import org.example.FuzzyLogic.MembershipFunctions.GaussianFunction;
-import org.example.FuzzyLogic.MembershipFunctions.TrapezoidalFunction;
-import org.example.FuzzyLogic.MembershipFunctions.TriangularFunction;
-import org.example.FuzzyLogic.RulesManagement.MamdaniParser;
-import org.example.FuzzyLogic.RulesManagement.RuleManager;
-import org.example.FuzzyLogic.RulesManagement.RulesParser;
-import org.example.FuzzyLogic.RulesManagement.SugenoParser;
+import org.example.Algorithms.FuzzyLogic.Defuzzification.DefuzzifyType;
+import org.example.Algorithms.FuzzyLogic.InferenceEngines.InferenceEngine;
+import org.example.Algorithms.FuzzyLogic.InferenceEngines.MamdaniEngine;
+import org.example.Algorithms.FuzzyLogic.InferenceEngines.SugenoEngine;
+import org.example.Algorithms.FuzzyLogic.LinguisticVariable.Linguistic_Variable;
+import org.example.Algorithms.FuzzyLogic.MembershipFunctions.Function;
+import org.example.Algorithms.FuzzyLogic.MembershipFunctions.GaussianFunction;
+import org.example.Algorithms.FuzzyLogic.MembershipFunctions.TrapezoidalFunction;
+import org.example.Algorithms.FuzzyLogic.MembershipFunctions.TriangularFunction;
+import org.example.Algorithms.FuzzyLogic.RulesManagement.MamdaniParser;
+import org.example.Algorithms.FuzzyLogic.RulesManagement.RuleManager;
+import org.example.Algorithms.FuzzyLogic.RulesManagement.RulesParser;
+import org.example.Algorithms.FuzzyLogic.RulesManagement.SugenoParser;
 
 import java.util.*;
 

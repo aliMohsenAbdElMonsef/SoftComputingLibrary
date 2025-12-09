@@ -1,6 +1,6 @@
-package org.example.FuzzyLogic.LinguisticVariable;
+package org.example.Algorithms.FuzzyLogic.LinguisticVariable;
 
-import org.example.FuzzyLogic.MembershipFunctions.Function;
+import org.example.Algorithms.FuzzyLogic.MembershipFunctions.Function;
 
 import java.util.HashMap;
 import java.util.Map;

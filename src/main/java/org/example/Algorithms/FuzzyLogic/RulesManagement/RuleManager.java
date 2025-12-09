@@ -1,7 +1,7 @@
-package org.example.FuzzyLogic.RulesManagement;
+package org.example.Algorithms.FuzzyLogic.RulesManagement;
 
-import org.example.FuzzyLogic.LinguisticVariable.Linguistic_Variable;
-import org.example.FuzzyLogic.RulesManagement.Rule;
+import org.example.Algorithms.FuzzyLogic.LinguisticVariable.Linguistic_Variable;
+import org.example.Algorithms.FuzzyLogic.RulesManagement.Rule;
 
 import java.util.*;
 

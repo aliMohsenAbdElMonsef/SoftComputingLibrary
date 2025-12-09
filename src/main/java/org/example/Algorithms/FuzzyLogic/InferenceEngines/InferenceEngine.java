@@ -1,7 +1,7 @@
-package org.example.FuzzyLogic.InferenceEngines;
+package org.example.Algorithms.FuzzyLogic.InferenceEngines;
 
-import org.example.FuzzyLogic.Defuzzification.DefuzzifyType;
-import org.example.FuzzyLogic.LinguisticVariable.Linguistic_Variable;
+import org.example.Algorithms.FuzzyLogic.Defuzzification.DefuzzifyType;
+import org.example.Algorithms.FuzzyLogic.LinguisticVariable.Linguistic_Variable;
 
 import java.util.List;
 import java.util.Map;

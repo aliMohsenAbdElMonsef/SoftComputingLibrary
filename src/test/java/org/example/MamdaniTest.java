@@ -1,12 +1,12 @@
 package org.example;
 
-import org.example.FuzzyLogic.Defuzzification.DefuzzifyType;
-import org.example.FuzzyLogic.InferenceEngines.MamdaniEngine;
-import org.example.FuzzyLogic.LinguisticVariable.Linguistic_Variable;
-import org.example.FuzzyLogic.MembershipFunctions.TrapezoidalFunction;
-import org.example.FuzzyLogic.MembershipFunctions.TriangularFunction;
-import org.example.FuzzyLogic.RulesManagement.MamdaniParser;
-import org.example.FuzzyLogic.RulesManagement.RuleManager;
+import org.example.Algorithms.FuzzyLogic.Defuzzification.DefuzzifyType;
+import org.example.Algorithms.FuzzyLogic.InferenceEngines.MamdaniEngine;
+import org.example.Algorithms.FuzzyLogic.LinguisticVariable.Linguistic_Variable;
+import org.example.Algorithms.FuzzyLogic.MembershipFunctions.TrapezoidalFunction;
+import org.example.Algorithms.FuzzyLogic.MembershipFunctions.TriangularFunction;
+import org.example.Algorithms.FuzzyLogic.RulesManagement.MamdaniParser;
+import org.example.Algorithms.FuzzyLogic.RulesManagement.RuleManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,7 +47,7 @@ public class MamdaniTest {
 
             System.out.println("Running Mamdani inference with inputs: " + inputs);
             var results = engine.evaluate(inputs);
-            
+
             System.out.println("Fuzzy Results:");
             for (var entry : results) {
                 System.out.println("  " + entry.getKey() + ": " + entry.getValue());

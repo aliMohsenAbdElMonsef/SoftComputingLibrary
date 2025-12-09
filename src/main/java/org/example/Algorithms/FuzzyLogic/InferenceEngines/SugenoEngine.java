@@ -1,12 +1,12 @@
-package org.example.FuzzyLogic.InferenceEngines;
+package org.example.Algorithms.FuzzyLogic.InferenceEngines;
 
-import org.example.FuzzyLogic.Defuzzification.DefuzziferFactory;
-import org.example.FuzzyLogic.Defuzzification.DefuzzifyType;
-import org.example.FuzzyLogic.Defuzzification.defuzzify;
-import org.example.FuzzyLogic.LinguisticVariable.Linguistic_Variable;
-import org.example.FuzzyLogic.RulesManagement.Rule;
-import org.example.FuzzyLogic.RulesManagement.RuleManager;
-import org.example.FuzzyLogic.RulesManagement.SugenoRule;
+import org.example.Algorithms.FuzzyLogic.Defuzzification.DefuzziferFactory;
+import org.example.Algorithms.FuzzyLogic.Defuzzification.DefuzzifyType;
+import org.example.Algorithms.FuzzyLogic.Defuzzification.defuzzify;
+import org.example.Algorithms.FuzzyLogic.LinguisticVariable.Linguistic_Variable;
+import org.example.Algorithms.FuzzyLogic.RulesManagement.Rule;
+import org.example.Algorithms.FuzzyLogic.RulesManagement.RuleManager;
+import org.example.Algorithms.FuzzyLogic.RulesManagement.SugenoRule;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;

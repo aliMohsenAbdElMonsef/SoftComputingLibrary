@@ -1,4 +1,4 @@
-package org.example.FuzzyLogic.Operations;
+package org.example.Algorithms.FuzzyLogic.Operations;
 
 public abstract class AND implements Operation {
 }

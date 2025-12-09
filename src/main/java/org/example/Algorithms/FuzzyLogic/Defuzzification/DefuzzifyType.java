@@ -1,4 +1,4 @@
-package org.example.FuzzyLogic.Defuzzification;
+package org.example.Algorithms.FuzzyLogic.Defuzzification;
 
 public enum DefuzzifyType {
     WEIGHTED_AVERAGE,

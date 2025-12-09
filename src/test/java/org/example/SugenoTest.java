@@ -1,9 +1,9 @@
 package org.example;
 
-import org.example.FuzzyLogic.LinguisticVariable.Linguistic_Variable;
-import org.example.FuzzyLogic.RulesManagement.Rule;
-import org.example.FuzzyLogic.RulesManagement.SugenoParser;
-import org.example.FuzzyLogic.RulesManagement.SugenoRule;
+import org.example.Algorithms.FuzzyLogic.LinguisticVariable.Linguistic_Variable;
+import org.example.Algorithms.FuzzyLogic.RulesManagement.Rule;
+import org.example.Algorithms.FuzzyLogic.RulesManagement.SugenoParser;
+import org.example.Algorithms.FuzzyLogic.RulesManagement.SugenoRule;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +14,7 @@ public class SugenoTest {
             SugenoParser parser = new SugenoParser("max", "min");
             Map<String, Linguistic_Variable> variables = new HashMap<>();
             Linguistic_Variable var1 = new Linguistic_Variable("Var1");
-            var1.addFunction(new org.example.FuzzyLogic.MembershipFunctions.TriangularFunction("Low", 0, 0, 10));
+            var1.addFunction(new org.example.Algorithms.FuzzyLogic.MembershipFunctions.TriangularFunction("Low", 0, 0, 10));
             variables.put("Var1", var1);
 
             String ruleText = "IF Var1 IS Low THEN x + 2*y - z + 5";

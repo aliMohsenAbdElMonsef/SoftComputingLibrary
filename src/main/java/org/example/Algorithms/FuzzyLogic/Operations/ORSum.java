@@ -1,4 +1,4 @@
-package org.example.FuzzyLogic.Operations;
+package org.example.Algorithms.FuzzyLogic.Operations;
 
 public class ORSum extends OR {
     @Override

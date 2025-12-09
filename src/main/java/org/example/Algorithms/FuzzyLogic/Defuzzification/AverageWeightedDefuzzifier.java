@@ -1,7 +1,7 @@
-package org.example.FuzzyLogic.Defuzzification;
+package org.example.Algorithms.FuzzyLogic.Defuzzification;
 
-import org.example.FuzzyLogic.LinguisticVariable.Linguistic_Variable;
-import org.example.FuzzyLogic.MembershipFunctions.Function;
+import org.example.Algorithms.FuzzyLogic.LinguisticVariable.Linguistic_Variable;
+import org.example.Algorithms.FuzzyLogic.MembershipFunctions.Function;
 
 import java.util.List;
 import java.util.Map;

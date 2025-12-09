@@ -1,4 +1,4 @@
-package org.example.FuzzyLogic.MembershipFunctions;
+package org.example.Algorithms.FuzzyLogic.MembershipFunctions;
 
 import java.util.ArrayList;
 import java.util.List;

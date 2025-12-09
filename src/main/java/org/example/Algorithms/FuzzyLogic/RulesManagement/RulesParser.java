@@ -1,6 +1,6 @@
-package org.example.FuzzyLogic.RulesManagement;
+package org.example.Algorithms.FuzzyLogic.RulesManagement;
 
-import org.example.FuzzyLogic.LinguisticVariable.Linguistic_Variable;
+import org.example.Algorithms.FuzzyLogic.LinguisticVariable.Linguistic_Variable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +21,8 @@ public abstract class RulesParser {
 
     protected static List<String> extractConditions(String text) {
         List<String> list = new ArrayList<>();
-        Matcher m = Pattern.compile("(?i)(NOT\\s+)?\\w+\\s+IS\\s+\\w+").matcher(text);
+
+        Matcher m = Pattern.compile("(?i)(NOT\\s+)?\\w+\\s+IS\\s+(NOT\\s+)?\\w+").matcher(text);
         while (m.find())
             list.add(m.group().trim());
         return list;
@@ -37,17 +38,30 @@ public abstract class RulesParser {
 
     protected static Portion parsePortion(String text, Map<String, Linguistic_Variable> vars) {
         boolean isNot = false;
-        if (text.trim().toUpperCase().startsWith("NOT")) {
+        String trimmedText = text.trim();
+        
+
+        if (trimmedText.toUpperCase().startsWith("NOT")) {
             isNot = true;
-            text = text.trim().substring(3).trim();
+            trimmedText = trimmedText.substring(3).trim();
         }
 
-        String[] parts = text.split("(?i)\\s+IS\\s+");
+        String[] parts = trimmedText.split("(?i)\\s+IS\\s+");
         if (parts.length != 2)
             throw new RuntimeException("Invalid portion syntax: " + text);
 
         String varName = parts[0].trim();
         String funcName = parts[1].trim();
+
+
+        if (funcName.toUpperCase().startsWith("NOT ")) {
+            if (isNot) {
+                isNot = !isNot;
+            } else {
+                isNot = true;
+            }
+            funcName = funcName.substring(3).trim();
+        }
 
         Linguistic_Variable var = vars.get(varName);
         if (var == null)
