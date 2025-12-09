@@ -21,5 +21,5 @@ public class GAConfig {
     public ChromosomeFactory chromosomeFactory;
     public int numVariables;
 
-    // builder setters can be added here...
+
 }

@@ -12,16 +12,16 @@ import org.example.Algorithms.GA.BusinessLogic.Contracts.Selections.ISelection;
 import java.util.*;
 
 public class GeneticAlgorithm {
-    private int populationSize;//done
-    private int generations;//done
+    private int populationSize;
+    private int generations;
     private int selectionSize;
-    private double crossoverRate;//done
-    private double mutationRate;//done
-    private Functions fitnessFunction;//done
-    private Range[] ranges;//done
-    private int numVariables;//dene
-    private ISelection selection;//done
-    private ChromosomeFactory chromosomeFactory;//done
+    private double crossoverRate;
+    private double mutationRate;
+    private Functions fitnessFunction;
+    private Range[] ranges;
+    private int numVariables;
+    private ISelection selection;
+    private ChromosomeFactory chromosomeFactory;
     private ICrossOver crossover;
     private IReplacementStrategy replacementStrategy;
     private List<Chromosome> population;
@@ -50,7 +50,7 @@ public class GeneticAlgorithm {
     }
     public void setChromosomeConfig(int numVariables, Range[] ranges) {
         this.numVariables = numVariables;
-        // validate and possibly adjust ranges according to the fitness function
+
         if (this.fitnessFunction != null) {
             this.ranges = this.fitnessFunction.validateInput(ranges);
         } else {

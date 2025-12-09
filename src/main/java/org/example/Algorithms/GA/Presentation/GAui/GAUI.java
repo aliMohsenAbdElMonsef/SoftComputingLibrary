@@ -37,7 +37,7 @@ public class GAUI {
         int generations = 10000;
         int numVariables = 4;
 
-        // 1. Choose Fitness Function
+
         System.out.println("=== Genetic Algorithm Configuration ===");
         System.out.println("Please choose from the following options:\n");
         System.out.println("--- Fitness Functions ---");
@@ -59,7 +59,7 @@ public class GAUI {
         FitnessFactory fitnessFactory = fitnessFactoryMap.getOrDefault(functionChoice, new Fitness2Factory());
         Functions function = fitnessFactory.create();
 
-        // 2. Choose Selection Method
+
         System.out.println("\n--- Selection Methods ---");
         System.out.println("1. Tournament Selection");
         System.out.println("2. Roulette Wheel Selection");
@@ -84,7 +84,7 @@ public class GAUI {
             selection = selectionFactory.create();
         }
 
-        // 3. Get Ranges
+
         Range[] ranges = new Range[4];
         for (int i = 0; i < 4; i++) {
             System.out.print("Enter range of variable " + (i+1) + " (start end): ");
@@ -100,7 +100,7 @@ public class GAUI {
 
         ranges = function.validateInput(ranges);
 
-        // 4. Choose Chromosome Type
+
         System.out.println("\n--- Chromosome Types ---");
         System.out.println("1. Binary Chromosome");
         System.out.println("2. Floating Point Chromosome");
@@ -115,7 +115,7 @@ public class GAUI {
         );
         ChromosomeFactory chromosomeFactory = factoryMap.getOrDefault(chromosomeChoice, new BinaryChromosome(numVariables, ranges));
 
-        // 5. Choose Crossover
+
         System.out.println("\n--- Crossover Algorithms ---");
         System.out.println("1. Single Point Crossover");
         System.out.println("2. Multi Point Crossover");
@@ -139,7 +139,7 @@ public class GAUI {
             crossover = factory.createCrossOver();
         }
 
-        // 6. Replacement Strategy
+
         System.out.println("\n--- Replacement Strategies ---");
         System.out.println("1. Generational Replacement");
         System.out.println("2. Steady-State Replacement");
@@ -157,7 +157,7 @@ public class GAUI {
         System.out.print("Enter selection size: ");
         int selectionSize = scanner.nextInt();
 
-        // Construct config and return it
+
         GAConfig config = new GAConfig();
         config.populationSize = populationsize;
         config.crossoverRate = crossoverrate;
