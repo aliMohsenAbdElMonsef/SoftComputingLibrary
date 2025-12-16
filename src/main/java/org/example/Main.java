@@ -47,8 +47,12 @@ public class Main {
                     if (choice2.equalsIgnoreCase("file")) {
                         System.out.print("Input file path (.txt): ");
                         provider = new FileInputProvider(sc.next());
-                    } else {
+                    } else if (choice2.equalsIgnoreCase("cli")){
                         provider = new CLIInputProvider();
+                    }
+                    else{
+                        System.out.println("Invalid input source. Exiting.");
+                        return;
                     }
 
                     new NNEngine().run(provider);

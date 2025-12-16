@@ -20,7 +20,7 @@ public class NNEngine {
                 NNConfig config = provider.readConfig();
 
                 Dataset data = CSVDataLoader.loadAndSplit(
-                                provider.getDatasetPath(), 0.2, config.seed);
+                                provider.getDatasetPath(), 0.4, config.seed);
 
                 PreprocessingPipeline pipeline = new PreprocessingPipeline(List.of(new StandardScaler()));
                 pipeline.fit(data);

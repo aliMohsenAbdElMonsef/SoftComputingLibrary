@@ -29,6 +29,7 @@ public class NNConfig {
     public ActivationFunction hiddenActivation() {
         return switch (activationHidden.toLowerCase()) {
             case "sigmoid" -> new Sigmoid();
+            case "linear" -> new Linear();
             case "tanh" -> new Tanh();
             case "relu" -> new ReLU();
             case "step" -> new BinaryStep();
