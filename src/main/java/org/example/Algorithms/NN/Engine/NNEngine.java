@@ -7,6 +7,7 @@ import org.example.Algorithms.NN.DataHandling.CSVDataLoader;
 import org.example.Algorithms.NN.DataHandling.Dataset;
 import org.example.Algorithms.NN.DataHandling.Preproccesing.PreprocessingPipeline;
 import org.example.Algorithms.NN.DataHandling.Preproccesing.StandardScaler;
+import org.example.Algorithms.NN.Evaluation.Evaluator;
 import org.example.Algorithms.NN.InputProviders.InputProvider;
 import org.example.Algorithms.NN.Training.TrainingConfig;
 import org.example.Algorithms.NN.Training.TrainingEngine;
@@ -50,6 +51,25 @@ public class NNEngine {
                                                 config.batchSize));
 
                 trainer.train(data.xTrain, reshape(data.yTrain, config.outputSize));
+
+                Evaluator evaluator = new Evaluator(
+                        network,
+                        config.lossFunction()
+                );
+
+                double testLoss = evaluator.evaluateLoss(
+                        data.xTest,
+                        reshape(data.yTest, config.outputSize)
+                );
+
+                double acc = evaluator.accuracy(
+                        data.xTest,
+                        reshape(data.yTest, config.outputSize)
+                );
+
+                System.out.println("Test Loss: " + testLoss);
+                System.out.println("Test Accuracy: " + acc);
+
         }
 
         private double[][] reshape(double[] y, int out) {

@@ -3,9 +3,10 @@ package org.example.Algorithms.NN.InputProviders;
 import org.example.Algorithms.NN.Config.NNConfig;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 
-public class FileInputProvider implements InputProvider{
+public class FileInputProvider implements InputProvider  {
     private final String path;
     private String datasetPath;
 
@@ -44,6 +45,15 @@ public class FileInputProvider implements InputProvider{
             }
         }
         br.close();
+
+        if (datasetPath != null && !datasetPath.isEmpty()) {
+            java.io.File f = new java.io.File(datasetPath);
+            if (!f.exists()) {
+                throw new FileNotFoundException("Dataset file not found: " + datasetPath);
+            }
+        }
+
+        validate(c);
         return c;
     }
 

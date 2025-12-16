@@ -14,6 +14,8 @@ public class Layer {
     public double[] net;
     public double[] output;
     public double[] delta;
+    public double[][] grad;
+
 
     public Layer(int inputSize,
             int outputSize,
@@ -24,6 +26,7 @@ public class Layer {
         this.outputSize = outputSize;
         this.activation = activation;
         this.weights = initializer.initialize(outputSize, inputSize + 1);
+        this.grad = new double[outputSize][inputSize + 1];
     }
 
     public double[] forward(double[] input) {
@@ -43,4 +46,18 @@ public class Layer {
         }
         return output;
     }
+    public void zeroGrad() {
+        for (int i = 0; i < outputSize; i++)
+            for (int j = 0; j < inputSize + 1; j++)
+                grad[i][j] = 0.0;
+    }
+
+    public void accumulateGrad() {
+        for (int i = 0; i < outputSize; i++) {
+            for (int j = 0; j < input.length; j++) {
+                grad[i][j] += delta[i] * input[j];
+            }
+        }
+    }
+
 }

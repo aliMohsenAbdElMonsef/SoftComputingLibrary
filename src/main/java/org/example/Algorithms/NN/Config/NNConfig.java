@@ -4,10 +4,7 @@ import org.example.Algorithms.NN.ActivationFunctions.*;
 import org.example.Algorithms.NN.LossFunctions.BinaryCrossEntropy;
 import org.example.Algorithms.NN.LossFunctions.LossFunction;
 import org.example.Algorithms.NN.LossFunctions.MSE;
-import org.example.Algorithms.NN.WeightInitialization.He;
-import org.example.Algorithms.NN.WeightInitialization.RandomUniformInitializer;
-import org.example.Algorithms.NN.WeightInitialization.WeightInitializer;
-import org.example.Algorithms.NN.WeightInitialization.Xavier;
+import org.example.Algorithms.NN.WeightInitialization.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,15 +14,15 @@ public class NNConfig {
     public List<Integer> hiddenLayers = new ArrayList<>();
     public int outputSize;
 
-    public String activationHidden = "relu";
-    public String activationOutput = "sigmoid";
+    public String activationHidden;
+    public String activationOutput;
 
-    public String initializer = "xavier";
-    public String loss = "mse";
+    public String initializer;
+    public String loss;
 
-    public double learningRate = 0.01;
-    public int epochs = 100;
-    public int batchSize = 1;
+    public double learningRate;
+    public int epochs;
+    public int batchSize;
 
     public long seed = 42;
 
@@ -50,9 +47,9 @@ public class NNConfig {
 
     public WeightInitializer initializer() {
         return switch (initializer.toLowerCase()) {
-            case "random" -> new RandomUniformInitializer(-0.5, 0.5, seed);
-            case "he" -> new He(seed);
-            case "xavier" -> new Xavier(seed);
+            case "random" -> InitializerFactory.randomUniform(seed);
+            case "he" -> InitializerFactory.he(seed);
+            case "xavier" -> InitializerFactory.xavier(seed);
             default -> throw new IllegalArgumentException("Unknown initializer");
         };
     }

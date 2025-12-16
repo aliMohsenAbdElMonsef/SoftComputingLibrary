@@ -4,7 +4,7 @@ import org.example.Algorithms.NN.Config.NNConfig;
 
 import java.util.Scanner;
 
-public class CLIInputProvider implements InputProvider{
+public class CLIInputProvider implements InputProvider {
     private final Scanner sc = new Scanner(System.in);
     private String datasetPath;
 
@@ -49,6 +49,7 @@ public class CLIInputProvider implements InputProvider{
         System.out.print("CSV path: ");
         datasetPath = sc.next();
 
+        validate(c);
         return c;
     }
 

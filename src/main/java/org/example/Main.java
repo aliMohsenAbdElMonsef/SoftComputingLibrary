@@ -45,7 +45,7 @@ public class Main {
                     InputProvider provider;
 
                     if (choice2.equalsIgnoreCase("file")) {
-                        System.out.print("Config file path (.txt): ");
+                        System.out.print("Input file path (.txt): ");
                         provider = new FileInputProvider(sc.next());
                     } else {
                         provider = new CLIInputProvider();
