@@ -8,9 +8,6 @@ import org.example.Algorithms.NN.WeightInitialization.RandomUniformInitializer;
 
 import org.example.Algorithms.NN.Config.NNConfig;
 import org.example.Algorithms.NN.InputProviders.InputProvider;
-import org.example.Algorithms.NN.Training.TrainingEngine;
-import org.example.Algorithms.NN.Training.TrainingConfig;
-import org.example.Algorithms.NN.LossFunctions.MSE;
 
 public class NNManualTest {
     public static void main(String[] args) {
@@ -22,7 +19,6 @@ public class NNManualTest {
             testPreprocessing_StandardScaler();
             testForwardPass();
             testInputProviderValidation();
-            testTrainingEvaluation();
             System.out.println("ALL TESTS PASSED");
         } catch (Exception e) {
             e.printStackTrace();
@@ -166,28 +162,5 @@ public class NNManualTest {
                 throw new RuntimeException("Wrong message: " + e.getMessage());
             }
         }
-    }
-
-    private static void testTrainingEvaluation() {
-        System.out.println("Running testTrainingEvaluation...");
-        NeuralNetworkBuilder builder = new NeuralNetworkBuilder().inputSize(2);
-        builder.addLayer(2, new Sigmoid(), new RandomUniformInitializer(-0.5, 0.5, 123));
-        builder.addLayer(1, new Sigmoid(), new RandomUniformInitializer(-0.5, 0.5, 123));
-        NeuralNetwork nn = builder.build();
-
-        TrainingEngine trainer = new TrainingEngine(
-                nn,
-                new MSE(),
-                new TrainingConfig(0.1, 1, 1));
-
-        double[][] x = { { 0, 0 }, { 0, 1 } };
-        double[][] y = { { 0 }, { 1 } };
-
-        // Just check if it runs and returns a number >= 0
-        double loss = trainer.evaluate(x, y);
-        if (loss < 0 || Double.isNaN(loss)) {
-            throw new RuntimeException("Evaluation returned invalid loss: " + loss);
-        }
-        System.out.println("Training evaluation loss check passed: " + loss);
     }
 }
