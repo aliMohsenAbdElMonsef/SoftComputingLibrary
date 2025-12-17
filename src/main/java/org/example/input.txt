@@ -1,12 +1,12 @@
 inputSize=8
-hiddenLayers=32,16
+hiddenLayers=48,24,12
 outputSize=1
 activationHidden=relu
 activationOutput=sigmoid
 initializer=he
 loss=crossentropy
 learningRate=0.003
-epochs=500
+epochs=800
 batchSize=16
-optimizer=sgd
+optmizer=sgd
 dataset=D:\PROGRAMMING\Java\SoftComputingLibrary\src\main\java\org\example\Algorithms\NN\Data\diabetes.csv
