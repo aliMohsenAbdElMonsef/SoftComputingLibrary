@@ -6,7 +6,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
-public class FileInputProvider implements InputProvider  {
+public class FileInputProvider implements InputProvider {
     private final String path;
     private String datasetPath;
 
@@ -41,6 +41,7 @@ public class FileInputProvider implements InputProvider  {
                 case "learningRate" -> c.learningRate = Double.parseDouble(value);
                 case "epochs" -> c.epochs = Integer.parseInt(value);
                 case "batchSize" -> c.batchSize = Integer.parseInt(value);
+                case "optimizer" -> c.optimizer = value;
                 case "dataset" -> datasetPath = value;
             }
         }

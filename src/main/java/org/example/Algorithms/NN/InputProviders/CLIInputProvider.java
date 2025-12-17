@@ -46,6 +46,10 @@ public class CLIInputProvider implements InputProvider {
         System.out.print("Batch size: ");
         c.batchSize = sc.nextInt();
 
+        System.out.print("Optimizer (sgd/adam) [default: sgd]: ");
+        String optimizerInput = sc.next();
+        c.optimizer = optimizerInput.isEmpty() ? "sgd" : optimizerInput;
+
         System.out.print("CSV path: ");
         datasetPath = sc.next();
 

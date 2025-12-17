@@ -13,14 +13,24 @@ public class TrainingEngine {
     private final LossFunction loss;
     private final TrainingConfig config;
     private final Random random = new Random(42);
+    private final Optimizer optimizer;
 
     public TrainingEngine(NeuralNetwork network,
-                          LossFunction loss,
-                          TrainingConfig config) {
+            LossFunction loss,
+            TrainingConfig config) {
+        this(network, loss, config, "sgd");
+    }
+
+    public TrainingEngine(NeuralNetwork network,
+            LossFunction loss,
+            TrainingConfig config,
+            String optimizerType) {
 
         this.network = network;
         this.loss = loss;
         this.config = config;
+
+        this.optimizer = OptimizerFactory.create(optimizerType, config.learningRate);
     }
 
     public void train(double[][] x, double[][] y) {
@@ -28,6 +38,10 @@ public class TrainingEngine {
         List<Layer> layers = network.getLayers();
         int n = x.length;
         int batchSize = config.batchSize;
+
+        double bestLoss = Double.MAX_VALUE;
+        int patienceCounter = 0;
+        final int patience = 20;
 
         for (int epoch = 0; epoch < config.epochs; epoch++) {
 
@@ -51,9 +65,8 @@ public class TrainingEngine {
                     out.delta = new double[out.outputSize];
 
                     for (int j = 0; j < out.outputSize; j++) {
-                        out.delta[j] =
-                                loss.derivative(pred[j], y[i][j]) *
-                                        out.activation.derivative(pred[j]);
+                        out.delta[j] = loss.derivative(pred[j], y[i][j]) *
+                                out.activation.derivative(pred[j]);
                         totalLoss += loss.loss(pred[j], y[i][j]);
                     }
 
@@ -69,8 +82,7 @@ public class TrainingEngine {
                             for (int k = 0; k < next.outputSize; k++) {
                                 sum += next.weights[k][j + 1] * next.delta[k];
                             }
-                            curr.delta[j] =
-                                    sum * curr.activation.derivative(curr.output[j]);
+                            curr.delta[j] = sum * curr.activation.derivative(curr.output[j]);
                         }
                     }
 
@@ -78,18 +90,35 @@ public class TrainingEngine {
                         layer.accumulateGrad();
                 }
 
-                for (Layer layer : layers) {
+                for (int layerIdx = 0; layerIdx < layers.size(); layerIdx++) {
+                    Layer layer = layers.get(layerIdx);
+
+                    double[][] normalizedGrad = new double[layer.outputSize][layer.inputSize + 1];
                     for (int i = 0; i < layer.outputSize; i++) {
                         for (int j = 0; j < layer.inputSize + 1; j++) {
-                            layer.weights[i][j] -=
-                                    config.learningRate *
-                                            (layer.grad[i][j] / actualBatchSize);
+                            double l2Term = (j > 0) ? config.l2Lambda * layer.weights[i][j] : 0.0;
+                            normalizedGrad[i][j] = layer.grad[i][j] / actualBatchSize + l2Term;
                         }
                     }
+
+                    optimizer.update(layer.weights, normalizedGrad, layerIdx);
                 }
             }
 
             totalLoss /= n;
+
+            if (totalLoss < bestLoss) {
+                bestLoss = totalLoss;
+                patienceCounter = 0;
+            } else {
+                patienceCounter++;
+            }
+
+            if (patienceCounter >= patience) {
+                System.out.println("Early stopping at epoch " + epoch);
+                break;
+            }
+
             System.out.println("Epoch " + epoch + " | Loss: " + totalLoss);
         }
     }
