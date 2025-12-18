@@ -23,6 +23,7 @@ public class NNConfig {
     public double learningRate;
     public int epochs;
     public int batchSize;
+    public String optimizer = "sgd";
 
     public long seed = 42;
 
@@ -32,6 +33,7 @@ public class NNConfig {
             case "linear" -> new Linear();
             case "tanh" -> new Tanh();
             case "relu" -> new ReLU();
+            case "leakyrelu" -> new LeakyReLU();
             case "step" -> new BinaryStep();
             default -> throw new IllegalArgumentException("Unknown activation");
         };

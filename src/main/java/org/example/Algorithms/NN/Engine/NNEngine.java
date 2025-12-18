@@ -48,24 +48,22 @@ public class NNEngine {
                                 new TrainingConfig(
                                                 config.learningRate,
                                                 config.epochs,
-                                                config.batchSize));
+                                                config.batchSize),
+                                config.optimizer);
 
                 trainer.train(data.xTrain, reshape(data.yTrain, config.outputSize));
 
                 Evaluator evaluator = new Evaluator(
-                        network,
-                        config.lossFunction()
-                );
+                                network,
+                                config.lossFunction());
 
                 double testLoss = evaluator.evaluateLoss(
-                        data.xTest,
-                        reshape(data.yTest, config.outputSize)
-                );
+                                data.xTest,
+                                reshape(data.yTest, config.outputSize));
 
                 double acc = evaluator.accuracy(
-                        data.xTest,
-                        reshape(data.yTest, config.outputSize)
-                );
+                                data.xTest,
+                                reshape(data.yTest, config.outputSize));
 
                 System.out.println("Test Loss: " + testLoss);
                 System.out.println("Test Accuracy: " + acc);
