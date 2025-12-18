@@ -4,18 +4,17 @@ import org.example.Algorithms.NN.ActivationFunctions.ActivationFunction;
 import org.example.Algorithms.NN.WeightInitialization.WeightInitializer;
 
 public class Layer {
-    public final int inputSize;
-    public final int outputSize;
+    private final int inputSize;
+    private final int outputSize;
 
-    public final ActivationFunction activation;
-    public final double[][] weights;
+    private final ActivationFunction activation;
+    private final double[][] weights;
 
-    public double[] input;
-    public double[] net;
-    public double[] output;
-    public double[] delta;
-    public double[][] grad;
-
+    private double[] input;
+    private double[] net;
+    private double[] output;
+    private double[] delta;
+    private double[][] grad;
 
     public Layer(int inputSize,
             int outputSize,
@@ -46,6 +45,7 @@ public class Layer {
         }
         return output;
     }
+
     public void zeroGrad() {
         for (int i = 0; i < outputSize; i++)
             for (int j = 0; j < inputSize + 1; j++)
@@ -60,4 +60,43 @@ public class Layer {
         }
     }
 
+    public int getInputSize() {
+        return inputSize;
+    }
+
+    public int getOutputSize() {
+        return outputSize;
+    }
+
+    public ActivationFunction getActivation() {
+        return activation;
+    }
+
+    public double[][] getWeights() {
+        return weights;
+    }
+
+    public double[] getInput() {
+        return input;
+    }
+
+    public double[] getNet() {
+        return net;
+    }
+
+    public double[] getOutput() {
+        return output;
+    }
+
+    public double[] getDelta() {
+        return delta;
+    }
+
+    public void setDelta(double[] delta) {
+        this.delta = delta;
+    }
+
+    public double[][] getGrad() {
+        return grad;
+    }
 }

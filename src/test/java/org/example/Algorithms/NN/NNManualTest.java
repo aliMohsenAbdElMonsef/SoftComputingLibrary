@@ -140,7 +140,7 @@ public class NNManualTest {
 
         NNConfig config = new NNConfig();
         // Invalid config
-        config.inputSize = 0;
+        config.setInputSize(0);
         try {
             provider.validate(config);
             throw new RuntimeException("Expected IllegalArgumentException for invalid inputSize");
@@ -151,9 +151,9 @@ public class NNManualTest {
         }
 
         // Fix input size, set valid output size, break learning rate
-        config.inputSize = 10;
-        config.outputSize = 1;
-        config.learningRate = -0.1;
+        config.setInputSize(10);
+        config.setOutputSize(1);
+        config.setLearningRate(-0.1);
         try {
             provider.validate(config);
             throw new RuntimeException("Expected IllegalArgumentException for invalid learningRate");

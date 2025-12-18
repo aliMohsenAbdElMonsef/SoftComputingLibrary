@@ -20,15 +20,15 @@ public class NNEngine {
                 NNConfig config = provider.readConfig();
 
                 Dataset data = CSVDataLoader.loadAndSplit(
-                                provider.getDatasetPath(), 0.4, config.seed);
+                                provider.getDatasetPath(), 0.4, config.getSeed());
 
                 PreprocessingPipeline pipeline = new PreprocessingPipeline(List.of(new StandardScaler()));
                 pipeline.fit(data);
 
                 NeuralNetworkBuilder builder = new NeuralNetworkBuilder()
-                                .inputSize(config.inputSize);
+                                .inputSize(config.getInputSize());
 
-                for (int neurons : config.hiddenLayers) {
+                for (int neurons : config.getHiddenLayers()) {
                         builder.addLayer(
                                         neurons,
                                         config.hiddenActivation(),
@@ -36,7 +36,7 @@ public class NNEngine {
                 }
 
                 builder.addLayer(
-                                config.outputSize,
+                                config.getOutputSize(),
                                 config.outputActivation(),
                                 config.initializer());
 
@@ -46,12 +46,12 @@ public class NNEngine {
                                 network,
                                 config.lossFunction(),
                                 new TrainingConfig(
-                                                config.learningRate,
-                                                config.epochs,
-                                                config.batchSize),
-                                config.optimizer);
+                                                config.getLearningRate(),
+                                                config.getEpochs(),
+                                                config.getBatchSize()),
+                                config.getOptimizer());
 
-                trainer.train(data.xTrain, reshape(data.yTrain, config.outputSize));
+                trainer.train(data.xTrain, reshape(data.yTrain, config.getOutputSize()));
 
                 Evaluator evaluator = new Evaluator(
                                 network,
@@ -59,11 +59,11 @@ public class NNEngine {
 
                 double testLoss = evaluator.evaluateLoss(
                                 data.xTest,
-                                reshape(data.yTest, config.outputSize));
+                                reshape(data.yTest, config.getOutputSize()));
 
                 double acc = evaluator.accuracy(
                                 data.xTest,
-                                reshape(data.yTest, config.outputSize));
+                                reshape(data.yTest, config.getOutputSize()));
 
                 System.out.println("Test Loss: " + testLoss);
                 System.out.println("Test Accuracy: " + acc);

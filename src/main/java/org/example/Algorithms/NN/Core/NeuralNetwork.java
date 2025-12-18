@@ -23,6 +23,10 @@ public class NeuralNetwork {
         return out;
     }
 
+    public double[] predict(double[] input) {
+        return forward(input);
+    }
+
     private void validateInput(double[] input) {
         if (input == null || input.length == 0) {
             throw new IllegalArgumentException("Input cannot be null or empty");
@@ -30,9 +34,9 @@ public class NeuralNetwork {
         if (layers.isEmpty()) {
             throw new IllegalStateException("Neural Network has no layers");
         }
-        if (input.length != layers.get(0).inputSize) {
+        if (input.length != layers.get(0).getInputSize()) {
             throw new IllegalArgumentException("Input size " + input.length +
-                    " does not match expected layer input size " + layers.get(0).inputSize);
+                    " does not match expected layer input size " + layers.get(0).getInputSize());
         }
     }
 }

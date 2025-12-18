@@ -27,21 +27,21 @@ public class FileInputProvider implements InputProvider {
             String value = parts[1].trim();
 
             switch (key) {
-                case "inputSize" -> c.inputSize = Integer.parseInt(value);
+                case "inputSize" -> c.setInputSize(Integer.parseInt(value));
                 case "hiddenLayers" -> {
                     for (String s : value.split(",")) {
-                        c.hiddenLayers.add(Integer.parseInt(s));
+                        c.getHiddenLayers().add(Integer.parseInt(s));
                     }
                 }
-                case "outputSize" -> c.outputSize = Integer.parseInt(value);
-                case "activationHidden" -> c.activationHidden = value;
-                case "activationOutput" -> c.activationOutput = value;
-                case "initializer" -> c.initializer = value;
-                case "loss" -> c.loss = value;
-                case "learningRate" -> c.learningRate = Double.parseDouble(value);
-                case "epochs" -> c.epochs = Integer.parseInt(value);
-                case "batchSize" -> c.batchSize = Integer.parseInt(value);
-                case "optimizer" -> c.optimizer = value;
+                case "outputSize" -> c.setOutputSize(Integer.parseInt(value));
+                case "activationHidden" -> c.setActivationHidden(value);
+                case "activationOutput" -> c.setActivationOutput(value);
+                case "initializer" -> c.setInitializer(value);
+                case "loss" -> c.setLoss(value);
+                case "learningRate" -> c.setLearningRate(Double.parseDouble(value));
+                case "epochs" -> c.setEpochs(Integer.parseInt(value));
+                case "batchSize" -> c.setBatchSize(Integer.parseInt(value));
+                case "optimizer" -> c.setOptimizer(value);
                 case "dataset" -> datasetPath = value;
             }
         }

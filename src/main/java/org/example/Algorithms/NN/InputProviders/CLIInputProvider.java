@@ -13,42 +13,42 @@ public class CLIInputProvider implements InputProvider {
         NNConfig c = new NNConfig();
 
         System.out.print("Input size: ");
-        c.inputSize = sc.nextInt();
+        c.setInputSize(sc.nextInt());
 
         System.out.print("Hidden layers count: ");
         int h = sc.nextInt();
         for (int i = 0; i < h; i++) {
             System.out.print("Neurons in hidden layer " + (i + 1) + ": ");
-            c.hiddenLayers.add(sc.nextInt());
+            c.getHiddenLayers().add(sc.nextInt());
         }
 
         System.out.print("Output size: ");
-        c.outputSize = sc.nextInt();
+        c.setOutputSize(sc.nextInt());
 
         System.out.print("Hidden activation: ");
-        c.activationHidden = sc.next();
+        c.setActivationHidden(sc.next());
 
         System.out.print("Output activation: ");
-        c.activationOutput = sc.next();
+        c.setActivationOutput(sc.next());
 
         System.out.print("Initializer: ");
-        c.initializer = sc.next();
+        c.setInitializer(sc.next());
 
         System.out.print("Loss: ");
-        c.loss = sc.next();
+        c.setLoss(sc.next());
 
         System.out.print("Learning rate: ");
-        c.learningRate = sc.nextDouble();
+        c.setLearningRate(sc.nextDouble());
 
         System.out.print("Epochs: ");
-        c.epochs = sc.nextInt();
+        c.setEpochs(sc.nextInt());
 
         System.out.print("Batch size: ");
-        c.batchSize = sc.nextInt();
+        c.setBatchSize(sc.nextInt());
 
         System.out.print("Optimizer (sgd/adam) [default: sgd]: ");
         String optimizerInput = sc.next();
-        c.optimizer = optimizerInput.isEmpty() ? "sgd" : optimizerInput;
+        c.setOptimizer(optimizerInput.isEmpty() ? "sgd" : optimizerInput);
 
         System.out.print("CSV path: ");
         datasetPath = sc.next();

@@ -62,11 +62,11 @@ public class TrainingEngine {
                     double[] pred = network.forward(x[i]);
 
                     Layer out = layers.get(layers.size() - 1);
-                    out.delta = new double[out.outputSize];
+                    out.setDelta(new double[out.getOutputSize()]);
 
-                    for (int j = 0; j < out.outputSize; j++) {
-                        out.delta[j] = loss.derivative(pred[j], y[i][j]) *
-                                out.activation.derivative(pred[j]);
+                    for (int j = 0; j < out.getOutputSize(); j++) {
+                        out.getDelta()[j] = loss.derivative(pred[j], y[i][j]) *
+                                out.getActivation().derivative(pred[j]);
                         totalLoss += loss.loss(pred[j], y[i][j]);
                     }
 
@@ -75,14 +75,14 @@ public class TrainingEngine {
                         Layer curr = layers.get(l);
                         Layer next = layers.get(l + 1);
 
-                        curr.delta = new double[curr.outputSize];
+                        curr.setDelta(new double[curr.getOutputSize()]);
 
-                        for (int j = 0; j < curr.outputSize; j++) {
+                        for (int j = 0; j < curr.getOutputSize(); j++) {
                             double sum = 0;
-                            for (int k = 0; k < next.outputSize; k++) {
-                                sum += next.weights[k][j + 1] * next.delta[k];
+                            for (int k = 0; k < next.getOutputSize(); k++) {
+                                sum += next.getWeights()[k][j + 1] * next.getDelta()[k];
                             }
-                            curr.delta[j] = sum * curr.activation.derivative(curr.output[j]);
+                            curr.getDelta()[j] = sum * curr.getActivation().derivative(curr.getOutput()[j]);
                         }
                     }
 
@@ -93,15 +93,15 @@ public class TrainingEngine {
                 for (int layerIdx = 0; layerIdx < layers.size(); layerIdx++) {
                     Layer layer = layers.get(layerIdx);
 
-                    double[][] normalizedGrad = new double[layer.outputSize][layer.inputSize + 1];
-                    for (int i = 0; i < layer.outputSize; i++) {
-                        for (int j = 0; j < layer.inputSize + 1; j++) {
-                            double l2Term = (j > 0) ? config.l2Lambda * layer.weights[i][j] : 0.0;
-                            normalizedGrad[i][j] = layer.grad[i][j] / actualBatchSize + l2Term;
+                    double[][] normalizedGrad = new double[layer.getOutputSize()][layer.getInputSize() + 1];
+                    for (int i = 0; i < layer.getOutputSize(); i++) {
+                        for (int j = 0; j < layer.getInputSize() + 1; j++) {
+                            double l2Term = (j > 0) ? config.l2Lambda * layer.getWeights()[i][j] : 0.0;
+                            normalizedGrad[i][j] = layer.getGrad()[i][j] / actualBatchSize + l2Term;
                         }
                     }
 
-                    optimizer.update(layer.weights, normalizedGrad, layerIdx);
+                    optimizer.update(layer.getWeights(), normalizedGrad, layerIdx);
                 }
             }
 
