@@ -1,14 +1,11 @@
 package org.example.Algorithms.NN;
 
-import org.example.Algorithms.NN.Core.Layer;
 import org.example.Algorithms.NN.Core.NeuralNetwork;
 import org.example.Algorithms.NN.Core.NeuralNetworkBuilder;
-import org.example.Algorithms.NN.DataHandling.Preproccesing.StandardScaler;
+import org.example.Algorithms.NN.DataHandling.Normalization.StandardScaler;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.example.Algorithms.NN.ActivationFunctions.Relu;
-import org.example.Algorithms.NN.ActivationFunctions.Sigmoid;
-import org.example.Algorithms.NN.WeightInitialization.RandomUniformInitializer;
 
 public class NNLibraryTest {
 

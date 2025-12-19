@@ -1,4 +1,4 @@
-package org.example.Algorithms.NN.DataHandling.Preproccesing;
+package org.example.Algorithms.NN.DataHandling.Normalization;
 
 
 public class StandardScaler implements Processor {
