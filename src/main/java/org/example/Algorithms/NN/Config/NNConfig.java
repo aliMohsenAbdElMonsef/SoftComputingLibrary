@@ -131,7 +131,6 @@ public class NNConfig {
             case "linear" -> new Linear();
             case "tanh" -> new Tanh();
             case "relu" -> new ReLU();
-            case "leakyrelu" -> new LeakyReLU();
             case "step" -> new BinaryStep();
             default -> throw new IllegalArgumentException("Unknown activation");
         };
